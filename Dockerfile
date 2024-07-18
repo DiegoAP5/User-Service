@@ -14,7 +14,7 @@ COPY pom.xml .
 
 # Copiar el código fuente y construir el proyecto
 COPY src ./src
-RUN mvn package -DskipTests
+RUN mvn clean install
 
 # Crear una etapa final para ejecutar la aplicación
 FROM base
