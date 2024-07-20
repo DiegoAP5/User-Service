@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -93,12 +93,6 @@
 					<source>${java.version}</source> <!-- depending on your project -->
 					<target>${java.version}</target> <!-- depending on your project -->
 					<annotationProcessorPaths>
-						<dependency>
-							<groupId>org.mapstruct</groupId>
-							<artifactId>mapstruct-processor</artifactId>
-							<version>${org.mapstruct.version}</version>
-							<scope>provided</scope>
-						</dependency>
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
@@ -109,7 +103,6 @@
 							<artifactId>mapstruct-processor</artifactId>
 							<version>${org.mapstruct.version}</version>
 						</path>
-						<!-- other annotation processors -->
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
