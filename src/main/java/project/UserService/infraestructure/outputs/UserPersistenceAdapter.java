@@ -25,9 +25,6 @@ public class UserPersistenceAdapter implements IUserPersistencePort {
     private final IRoleRepository roleRepository;
     private final IUserEntintyMapper mapper;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     public UserPersistenceAdapter(IUserRepository userRepository, IUserEntintyMapper mapper, IRoleRepository repository) {
         this.userRepository = userRepository;
         this.roleRepository = repository;
@@ -50,8 +47,9 @@ public class UserPersistenceAdapter implements IUserPersistencePort {
 
     @Override
     public UserModel create(UserModel user) {
+
         User user1 = mapper.toUser(user);
-        user1.setPassword(passwordEncoder.encode(user.getPassword()));
+        user1.setPassword(passwordEncoder().encode(user1.getPassword()));
         Role role = roleRepository.findRoleById(user.getRole_id());
         user1.setRole(role);
         User newUser = userRepository.save(user1);
@@ -86,5 +84,9 @@ public class UserPersistenceAdapter implements IUserPersistencePort {
     @Override
     public void delete(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
