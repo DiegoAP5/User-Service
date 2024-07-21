@@ -1,5 +1,8 @@
 package project.UserService.infraestructure.outputs;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import project.UserService.application.ports.outputs.IRolePersistencePorts;
 import project.UserService.application.ports.outputs.IUserPersistencePort;
@@ -21,6 +24,9 @@ public class UserPersistenceAdapter implements IUserPersistencePort {
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
     private final IUserEntintyMapper mapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserPersistenceAdapter(IUserRepository userRepository, IUserEntintyMapper mapper, IRoleRepository repository) {
         this.userRepository = userRepository;
@@ -45,6 +51,7 @@ public class UserPersistenceAdapter implements IUserPersistencePort {
     @Override
     public UserModel create(UserModel user) {
         User user1 = mapper.toUser(user);
+        user1.setPassword(passwordEncoder.encode(user.getPassword()));
         User newUser = userRepository.save(user1);
 
         return mapper.toUserModel(newUser);
