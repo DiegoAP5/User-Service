@@ -9,15 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import project.UserService.application.ports.inputs.IUserServicePorts;
-import project.UserService.domain.models.UserModel;
 import project.UserService.infraestructure.inputs.dtos.request.AuthenticationRequest;
 import project.UserService.infraestructure.inputs.dtos.response.BaseResponse;
 import project.UserService.infraestructure.outputs.entities.User;
 import project.UserService.infraestructure.outputs.mappers.IUserEntintyMapper;
 import project.UserService.infraestructure.outputs.repositories.IUserRepository;
-import project.UserService.infraestructure.security.JWTUtil;
 
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +32,8 @@ public class AuthRest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private static final Key key = JWTUtil.generateKey();
+    @Value("${jwt.secret}")
+    private String secret;
 
     @Autowired
     private IUserRepository repository;
@@ -44,14 +42,13 @@ public class AuthRest {
     public ResponseEntity<BaseResponse> login(@RequestBody AuthenticationRequest authRequest) {
         String email = authRequest.getEmail();
         String password = authRequest.getPassword();
-        System.out.println(key);
         User user = repository.findByEmail(email);
 
         if (user!=null && passwordEncoder.matches(password, user.getPassword())) {
             String token = Jwts.builder()
                     .setSubject(email)
                     .setExpiration(new Date(System.currentTimeMillis() + 3600000)) // 1 hora
-                    .signWith(SignatureAlgorithm.HS512, key)
+                    .signWith(SignatureAlgorithm.HS512, secret)
                     .compact();
 
             Map<String, String> response = new HashMap<>();

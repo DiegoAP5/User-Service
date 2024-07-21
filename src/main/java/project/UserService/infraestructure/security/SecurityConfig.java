@@ -23,7 +23,7 @@ public class SecurityConfig{
                 .authorizeHttpRequests( authz -> authz
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/users/create").permitAll()
-                        .requestMatchers("users/email/").authenticated())
+                        .requestMatchers("/*").permitAll())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
