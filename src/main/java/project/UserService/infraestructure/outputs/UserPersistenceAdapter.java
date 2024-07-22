@@ -1,7 +1,5 @@
 package project.UserService.infraestructure.outputs;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import project.UserService.application.ports.outputs.IRolePersistencePorts;
 import project.UserService.application.ports.outputs.IUserPersistencePort;
@@ -48,7 +46,6 @@ public class UserPersistenceAdapter implements IUserPersistencePort {
     public UserModel create(UserModel user) {
 
         User user1 = mapper.toUser(user);
-        user1.setPassword(passwordEncoder().encode(user1.getPassword()));
         Role role = roleRepository.findRoleById(user.getRole_id());
         user1.setRole(role);
         User newUser = userRepository.save(user1);
@@ -85,7 +82,4 @@ public class UserPersistenceAdapter implements IUserPersistencePort {
         userRepository.deleteById(id);
     }
 
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
