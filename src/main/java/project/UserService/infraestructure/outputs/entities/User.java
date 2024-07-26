@@ -2,6 +2,7 @@ package project.UserService.infraestructure.outputs.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -29,6 +30,7 @@ public class User {
     private String email;
 
     @NotNull
+    @Size(min = 8)
     private String password;
 
     @ManyToOne

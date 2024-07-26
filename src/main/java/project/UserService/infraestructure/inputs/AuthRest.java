@@ -53,9 +53,8 @@ public class AuthRest {
                     .setExpiration(new Date(System.currentTimeMillis() + 3600000)) // 1 hora
                     .signWith(SignatureAlgorithm.HS512, key)
                     .compact();
-
             Map<String, String> response = new HashMap<>();
-            response.put("token", token);
+            response.put("user", String.valueOf(user.getId()));
             BaseResponse response1 = BaseResponse.builder()
                     .data(response)
                     .success(Boolean.TRUE)

@@ -52,6 +52,8 @@ public class UserPersistenceAdapter implements IUserPersistencePort {
     public UserModel create(UserModel user) {
         User user1 = mapper.toUser(user);
         user1.setPassword(passwordEncoder.encode(user.getPassword()));
+        Role role = roleRepository.findRoleById(user.getRole_id());
+        user1.setRole(role);
         User newUser = userRepository.save(user1);
 
         return mapper.toUserModel(newUser);
