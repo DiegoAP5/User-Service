@@ -15,7 +15,6 @@ import project.UserService.infraestructure.inputs.dtos.response.BaseResponse;
 import project.UserService.infraestructure.outputs.entities.User;
 import project.UserService.infraestructure.outputs.mappers.IUserEntintyMapper;
 import project.UserService.infraestructure.outputs.repositories.IUserRepository;
-import project.UserService.infraestructure.security.JWTUtil;
 
 import java.security.Key;
 import java.util.Date;
@@ -35,7 +34,8 @@ public class AuthRest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private static final Key key = JWTUtil.generateKey();
+    @Value("${jwt.secret}")
+    private String key;
 
     @Autowired
     private IUserRepository repository;
