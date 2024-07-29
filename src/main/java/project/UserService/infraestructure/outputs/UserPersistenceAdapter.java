@@ -45,18 +45,19 @@ public class UserPersistenceAdapter implements IUserPersistencePort {
 
     @Override
     public UserModel findById(Long id) {
-        return userRepository.findById(id).map(mapper::toUserModel).orElse(null);
+        User user = userRepository.findById(id).orElse(null);
+        UserModel response = userRepository.findById(id).map(mapper::toUserModel).orElse(null);
+        response.setRole_id(user.getRole_id());
+        return response;
     }
 
     @Override
     public UserModel create(UserModel user) {
         User user1 = mapper.toUser(user);
         user1.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role role = roleRepository.findRoleById(user.getRole_id());
-        user1.setRole(role);
+        user1.setRole_id(user.getRole_id());
         User newUser = userRepository.save(user1);
-
-        return mapper.toUserModel(newUser);
+        return user;
     }
 
     @Override
@@ -73,8 +74,7 @@ public class UserPersistenceAdapter implements IUserPersistencePort {
                 user.setName(request.getName());
             }
             if (request.getRole_id() != null) {
-                Role role = roleRepository.findRoleById(request.getRole_id());
-                user.setRole(role);
+                user.setRole_id(request.getRole_id());
             }
             User updater = userRepository.save(user);
             return mapper.toUserModel(updater);

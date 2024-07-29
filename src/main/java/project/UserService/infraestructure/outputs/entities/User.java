@@ -33,7 +33,5 @@ public class User {
     @Size(min = 8)
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id",referencedColumnName = "id")
-    private Role role;
+    private Long role_id;
 }
